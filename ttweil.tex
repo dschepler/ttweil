@@ -173,23 +173,38 @@
 	{\bf Remark:} If you are familiar with the topos of sheaves on a Grothendieck site, in general $\Omega$ on such a site is not as simple.  Instead, $\Omega(U)$ in the general case looks more like the ideal definition, with the added restriction that if $\{ \varphi_i : W_i \to V \}$ is a covering sieve in the site, and for $f : V \to U$ you have $f \circ \varphi_i$ is in the subset, then you must also have $f$ in the subset.
 	
 	\section{The Internal Language and Kripke-Joyal Semantics}
-	In the examples of a presheaf or sheaf topos, we have $\mathcal{F}(U) \simeq \Hom(h_U, \mathcal{F})$, where $h_U(V) = \begin{cases} \{ * \}, & V \subseteq U, \\ \emptyset, & V \not\subseteq U. \end{cases}$  In a more general topos, it will turn out to be useful to continue to think of a morphism $x \in \Hom(U, X)$ as a generalized element of $X$.  We will show that it will be easy to construct many functions on generalized elements of the form below.
+	In the example of a presheaf topos, we have $\mathcal{F}(U) \simeq \Hom(h_U, \mathcal{F})$, where $h_U$ is the presheaf $\Hom(U, {-})$.  Likewise, in the example of a sheaf topos on a topological space, we have $\mathcal{F}(U) \simeq \Hom(h_U, \mathcal{F})$, where $h_U(V) = \begin{cases} \{ * \}, & V \subseteq U, \\ \emptyset, & V \not\subseteq U. \end{cases}$  In a more general topos, it will turn out to be useful to continue to think of a morphism $x \in \Hom(U, X)$ as a generalized element of $X$.  We will show that it will be easy to construct many functions on generalized elements of the form below.
 
 	\begin{definition}
-		Let $\calT$ be a topos, and let $A_1, \ldots, A_n, B$ be objects of $\calT$.  Then a (semantic) term of type $B$ with free variables of types $A_1, \ldots, A_n$ is a natural transformation $\prod_{i=1}^n \Hom({-}, A_i) \to \Hom({-}, B)$.  We will often informally describe such a term as an expression with named free variables $a_1 : A_1, \ldots, a_n : A_n$.
+		Let $\calT$ be a topos.  Then a (semantic) context over $\calT$ is a functor $\calT^{\op} \to \Set$.
 	\end{definition}
-	Note that by Yoneda's lemma, this is equivalent to a morphism $\prod_{i=1}^n A_i \to B$.  However, we will usually use the original form of the definition, in order to continue thinking of it as an expression where we can plug in generalized elements of $A_i$ and get a generalized element of $B$.
+	
+	\begin{example}
+		If $A_1, \ldots, A_n$ are objects of the topos, then the context of free variables $a_1 : A_1, \ldots, a_n : A_n$ will denote the functor $\Hom({-}, A_1) \times \cdots \times \Hom({-}, A_n)$.  As a special case, the empty context is the terminal functor ${-} \mapsto 1$.
+	\end{example}
+	
+	In line with this prototypical example, we will often think of an element $\vec\alpha \in \Gamma(U)$ as an assignment of variables in the context $\Gamma$.
+	
+	\begin{example}
+		Likewise, if $\Gamma$ is a context, and $X$ is an object of the topos, then $\Gamma, x : X$ will be the context $\Gamma({-}) \times \Hom({-}, X)$.  (Here, for instance if $\Gamma$ is informally considered to have some free variables, we will usually assume $x$ is distinct from that set of free variables.  In other words, we prefer to forbid ``variable shadowing'' in the contexts and terms we will write.)
+	\end{example}
+	
+	\begin{definition}
+		Let $\calT$ be a topos with a context $\Gamma$ and object $B$.  Then a (semantic) term of type $B$ in context $\Gamma$ is a natural transformation $\Gamma \to \Hom({-}, B)$.
+	\end{definition}
+	
+	In the typical case where $\Gamma$ is a context of free variables $a_1 : A_1, \ldots, a_n : A_n$, we will often informally describe such a term as an expression using the named free variables.  Note that by Yoneda's lemma, in this case of $\Gamma$, a term of type $B$ in context $a_1 : A_1, \ldots, a_n : A_n$ is equivalent to a morphism $\prod_{i=1}^n A_i \to B$.  However, we will usually use the original form of the definition, in order to continue thinking of it as an expression where we can plug in generalized elements of $A_i$ and get a generalized element of $B$.
 	
 	\begin{definition}
 		For $1 \le j \le n$, $a_j$ is a term of type $A_j$ with free variables $a_1 : A_1, \ldots, a_n : A_n$.  This is simply the $j$th projection $\prod_{i=1}^n \Hom({-}, A_i) \to \Hom({-}, A_j)$.
 	\end{definition}
 	
 	\begin{definition}
-		If $\tau$ is a term of type $X$ with free variables $a_1 : A_1, \ldots, a_n : A_n$, and $f \in \Hom(X, Y)$, then $f(\tau)$ is the term of type $Y$ with the same set of free variables defined by $f(\tau)(\alpha_1, \ldots, \alpha_n) = f \circ \tau(\alpha_1, \ldots, \alpha_n)$.
+		If $\tau$ is a term of type $X$ in context $\Gamma$, and $f \in \Hom(X, Y)$, then $f(\tau)$ is the term of type $Y$ in the same context $f(\tau)(\vec\alpha) = f \circ \tau(\vec\alpha)$.
 	\end{definition}
 	
 	\begin{definition}
-		$\top$ will be the term of type $\Omega$ (with any number of desired free variables) which at object $U$ of the topos acts as the constant function with value in $\Hom(U, \Omega)$ corresponding to the subobject $\id_U : U \to U$.
+		$\top$ will be the term of type $\Omega$ (over any context $\Gamma$) which at object $U$ of the topos acts as the constant function with value in $\Hom(U, \Omega)$ corresponding to the subobject $\id_U : U \to U$.
 	\end{definition}
 	
 	\subsection{Basics of Kripke-Joyal Semantics}
@@ -197,36 +212,36 @@
 	Following on from the previous example, it will also be useful to think of terms of type $\Omega := P(1)$ as propositional terms, or to think of generalized elements of $\Omega$ as generalized truth values.  In reasoning about such generalized truth values, the following definition and observations will be useful:
 	
 	\begin{definition}
-		Let $\alpha_i \in \Hom(U, A_i)$ for $1 \le i \le n$, and let $\varphi$ be a semantic term of type $\Omega$ with free variables $a_1 : A_1, \ldots, a_n : A_n$.  Then $U \models \varphi(a_1 := \alpha_1, \ldots, a_n := \alpha_n)$ if and only if $\varphi_U(\alpha_1, \ldots, \alpha_n) = \top_U$.
+		Let $\vec\alpha \in \Gamma(U)$, and let $\varphi$ be a semantic term of type $\Omega$ in context $\Gamma$.  Then $U \models \varphi[\vec\alpha]$ if and only if $\varphi_U(\vec\alpha) = \top_U$.
 	\end{definition}
 	
 	\begin{proposition}
-		A semantic term of type $\Omega$ with free variables $a_1 : A_1, \ldots, a_n : A_n$ is uniquely determined by the set of objects $U$ and tuples $\alpha_i \in \Hom(U, A_i)$ such that $U \models \varphi(a_1 := \alpha_1, \ldots, a_n := \alpha_n)$.
+		A semantic term of type $\Omega$ in context $\Gamma$ is uniquely determined by the set of objects $U$ and assignments $\vec\alpha \in \Gamma(U)$ such that $U \models \varphi(\vec\alpha)$.
 		
 		\begin{proof}
 			It suffices to show that a section $\varphi \in \Hom(U, \Omega)$ is uniquely determined by the set of subobjects $i_V : V \hookrightarrow U$ such that $\varphi \circ i_V = \top_V$.  This is easy to see since $\varphi \circ i_V$ corresponds to the subobject of $V$ obtained by pulling back the subobject $U'$ of $U$ corresponding to $\varphi$.  This pullback is equal to $V$ if and only if $V \le U'$, so $U'$ is uniquely determined as the maximum subobject $V$ such that $\varphi \circ i_V = \top_V$.
 		\end{proof}
 	\end{proposition}
 	
-	In what follows, we will give conditions for each term of type $\Omega$ indicating when that term is satisfied for some tuple of generalized elements.  These conditions together will form what is known as the Kripke-Joyal semantics.  We will start off with a couple general properties.
+	In what follows, we will give conditions for each term of type $\Omega$ indicating when that term is satisfied for some assignment.  These conditions together will form what is known as the Kripke-Joyal semantics.  We will start off with a couple general properties.
 	
 	\begin{proposition}
-		Suppose $\tau$ is a term of type $\Omega$ with free variables $a_1 : A_1, \ldots, a_n : A_n$; $U$ is an object; $\alpha_i \in \Hom(U, A_i)$; and $\pi : V \to U$ is a morphism.
+		Suppose $\tau$ is a term of type $\Omega$ in context $\Gamma$; $U$ is an object; $\vec\alpha \in \Gamma(U)$; and $\pi : V \to U$ is a morphism.
 		\begin{enumerate}
-			\item If $U \models \varphi[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$, then $V \models \varphi[a_1 := \alpha_1 \circ \pi, \ldots, a_n := \alpha_n \circ \pi]$.
-			\item If $\pi$ is an epimorphism, then the converse holds: if $V \models \varphi[a_1 := \alpha_1 \circ \pi, \ldots, a_n := \alpha_n \circ \pi]$, then $U \models \varphi[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$.
+			\item If $U \models \varphi[\vec\alpha]$, then $V \models \varphi[\pi^* \vec\alpha]$.
+			\item If $\pi$ is an epimorphism, then the converse holds: if $V \models \varphi[\pi^* \vec\alpha]$, then $U \models \varphi[\vec\alpha]$.
 		\end{enumerate}
 		
 		\begin{proof}
 			\begin{enumerate}
-				\item From the naturality of $\varphi$, we see $\varphi(\alpha_1 \circ \pi, \ldots, \alpha_n \circ \pi) = \varphi(\alpha_1, \ldots, \alpha_n) \circ \pi = \top_U \circ \pi = \top_V$.
-				\item From the hypothesis, $\varphi(\alpha_1, \ldots, \alpha_n) \circ \pi = \top_V = \top_U \circ \pi$.  Since $\pi$ is an epimorphism, that implies $\varphi(\alpha_1, \ldots, \alpha_n) = \top_U$.
+				\item From the naturality of $\varphi$, we see $\varphi(\pi^* \vec\alpha) = \varphi(\vec\alpha) \circ \pi = \top_U \circ \pi = \top_V$.
+				\item From the hypothesis, $\varphi(\vec\alpha) \circ \pi = \top_V = \top_U \circ \pi$.  Since $\pi$ is an epimorphism, that implies $\varphi(\vec\alpha) = \top_U$.
 			\end{enumerate}
 		\end{proof}
 	\end{proposition}
 	
 	\begin{proposition}
-		For all objects $U$ and generalized elements $\alpha_i \in \Hom(U, A_i)$, $U \models \top[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$.
+		For all objects $U$ and assigments $\vec\alpha \in \Gamma(U)$, $U \models \top[\vec\alpha]$.
 		
 		\begin{proof}
 			Clear from the definitions.
@@ -236,29 +251,29 @@
 	\subsection{Equality Propositions}
 	
 	\begin{definition}
-		Suppose $\sigma$ and $\tau$ are terms of type $X$ with the same set of free variables $a_i : A_i$.  Then $\sigma = \tau$ is a term of type $\Omega$ with the same set of free variables corresponding to the natural transformation $\prod_{i=1}^n \Hom({-}, A_i) \to \Sub$ sending $(\alpha_i)$ to the equalizer of $\sigma(\alpha_1, \ldots, \alpha_n)$ and $\tau(\alpha_1, \ldots, \alpha_n)$.
+		Suppose $\sigma$ and $\tau$ are terms of type $X$ in the same context $\Gamma$.  Then $\sigma = \tau$ is a term of type $\Omega$ in context $\Gamma$ corresponding to the natural transformation $\Gamma \to \Sub$ sending $\vec\alpha$ to the equalizer of $\sigma(\vec\alpha)$ and $\tau(\vec\alpha)$.
 	\end{definition}
 	
 	\begin{proposition}
-		For generalized elements $\alpha_i \in \Hom(U, A_i)$, $U \models (\sigma = \tau)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if $\sigma(\alpha_1, \ldots, \alpha_n) = \tau(\alpha_1, \ldots, \alpha_n)$ in $\Hom(U, X)$.
+		For assignment $\vec\alpha \in \Gamma(U)$, $U \models (\sigma = \tau)[\vec\alpha]$ if and only if $\sigma(\vec\alpha) = \tau(\vec\alpha)$ in $\Hom(U, X)$.
 	\end{proposition}
 	
 	\subsection{Membership Propositions}
 	
 	\begin{definition}
-		Suppose $\sigma$ is a term of type $X$ and $\Sigma$ is a term of type $PX$ with the same set of free variables $a_i : A_i$.  Then $\sigma \in \Sigma$ is the term of type $\Omega$ with the same set of free variables corresponding to the natural transformation constructed as follows: from $x := \sigma(a_1, \ldots, a_n) \in \Hom(U, X)$ and $\Sigma(a_1, \ldots, a_n) \in \Hom(U, PX)$, we convert the latter to the corresponding subobject $S \hookrightarrow U \times X$, and then take the pullback of $S$ by the graph of $x$, which is the morphism $\Gamma_x := (\id_U, x) : X \to U \times X$.
+		Suppose $\sigma$ is a term of type $X$ and $\Sigma$ is a term of type $PX$ in the same context $\Gamma$.  Then $\sigma \in \Sigma$ is the term of type $\Omega$ in the same context corresponding to the natural transformation $\Gamma \to \Sub$ constructed as follows: from $x := \sigma(\vec\alpha) \in \Hom(U, X)$ and $\Sigma(\vec\alpha) \in \Hom(U, PX)$, we convert the latter to the corresponding subobject $S \hookrightarrow U \times X$, and then take the pullback of $S$ by the graph of $x$, which is the morphism $\Gamma_x := (\id_U, x) : X \to U \times X$.
 	\end{definition}
 	\begin{proposition}
-		$U \models (\sigma \in \Sigma)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if the graph of $\sigma(a_1, \ldots, a_n)$ factors through the subobject of $U\times X$ corresponding to $\Sigma(a_1, \ldots, a_n)$.
+		$U \models (\sigma \in \Sigma)[\vec\alpha]$ if and only if the graph of $\sigma(\vec\alpha)$ factors through the subobject of $U\times X$ corresponding to $\Sigma(\vec\alpha)$.
 	\end{proposition}
 	
 	\subsection{Conjunction}
 	
 	\begin{definition}
-		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ with the same set of free variables $a_i : A_i$.  Then $\varphi \wedge \psi$ is the term of type $\Omega$ corresponding to the natural transformation constructed as follows: take the subobjects $S$ and $T$ of $U$ corresponding to $\varphi(\alpha_1, \ldots, \alpha_n)$ and $\psi(\alpha_1, \ldots, \alpha_n)$; take the intersection subobject $S \times_U T$; and convert this back to a morphism $U \to \Omega$.
+		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ in the same context $\Gamma$.  Then $\varphi \wedge \psi$ is the term of type $\Omega$ in context $\Gamma$ corresponding to the natural transformation constructed as follows: take the subobjects $S$ and $T$ of $U$ corresponding to $\varphi(\vec\alpha)$ and $\psi(\vec\alpha)$; take the intersection subobject $S \times_U T$; and convert this back to a morphism $U \to \Omega$.
 	\end{definition}
 	\begin{proposition}
-		$U \models (\varphi \wedge \psi)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if $U \models \varphi[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ and $U \models \psi[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$.
+		$U \models (\varphi \wedge \psi)[\vec\alpha]$ if and only if $U \models \varphi[\vec\alpha]$ and $U \models \psi[\vec\alpha]$.
 		\begin{proof}
 			This follows from the observation that $S \times_U T$ is equivalent to the full subobject $\id_U : U \to U$ if and only if each of $S$ and $T$ is.
 		\end{proof}
@@ -267,24 +282,24 @@
 	\subsection{Equivalence}
 	
 	\begin{definition}
-		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ with the same set of free variables $a_i : A_i$.  Then $\varphi \leftrightarrow \psi$ is another name for $\varphi = \psi$.
+		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ in the same context $\Gamma$.  Then $\varphi \leftrightarrow \psi$ is another name for $\varphi = \psi$.
 	\end{definition}
 	\begin{proposition}
-		$U \models (\varphi \leftrightarrow \psi)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if for each object $V$ and morphism $\pi : V \to U$, $V \models \varphi[a_1 := \alpha_1 \circ \pi, \ldots, a_n := \alpha_n \circ \pi]$ if and only if $V \models \psi[a_1 := \alpha_1 \circ \pi, a_n := \alpha_n \circ \pi]$.
+		$U \models (\varphi \leftrightarrow \psi)[\vec\alpha]$ if and only if for each object $V$ and morphism $\pi : V \to U$, $V \models \varphi[\pi^* \vec\alpha]$ if and only if $V \models \psi[\pi^* \vec\alpha]$.
 		\begin{proof}
-			($\Rightarrow$): From the hypothesis, we know that $\varphi(\alpha_1, \ldots, \alpha_n) = \psi(\alpha_1, \ldots, \alpha_n)$.  Also, since $\varphi$ and $\psi$ are natural transformations, we have $\varphi(\alpha_1 \circ \pi, \ldots, \alpha_n \circ \pi) = \varphi(\alpha_1, \ldots, \alpha_n) \circ \pi$, and similarly for $\psi$.
+			($\Rightarrow$): From the hypothesis, we know that $\varphi(\vec\alpha) = \psi(\vec\alpha)$.  Also, since $\varphi$ and $\psi$ are natural transformations, we have $\varphi(\pi^* \vec\alpha) = \varphi(\pi^* \vec\alpha) \circ \pi$, and similarly for $\psi$.
 			
-			($\Leftarrow$): If we apply the hypothesis with $V$ being the subobject of $U$ corresponding to $\varphi(\alpha_1, \ldots, \alpha_n)$, we get that $\varphi(\alpha_1, \ldots, \alpha_n) \le \psi(\alpha_1, \ldots, \alpha_n)$.  Similarly, if $V$ is the subobject corresponding to $\psi(\alpha_1, \ldots, \alpha_n)$, we get $\psi(\alpha_1, \ldots, \alpha_n) \le \varphi(\alpha_1, \ldots, \alpha_n)$.
+			($\Leftarrow$): If we apply the hypothesis with $V$ being the subobject of $U$ corresponding to $\varphi(\vec\alpha)$, we get that $\varphi(\vec\alpha) \le \psi(\vec\alpha)$.  Similarly, if $V$ is the subobject corresponding to $\psi(\vec\alpha)$, we get $\psi(\vec\alpha) \le \varphi(\vec\alpha)$.
 		\end{proof}
 	\end{proposition}
 	
 	\subsection{Implication}
 	
 	\begin{definition}
-		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ with the same set of free variables $a_i : A_i$.  Then $\varphi \rightarrow \psi$ is the term of type $\Omega$ given by $(\varphi \land \psi) \leftrightarrow \varphi$.
+		Suppose $\varphi$ and $\psi$ are terms of type $\Omega$ in the same context $\Gamma$.  Then $\varphi \rightarrow \psi$ is the term of type $\Omega$ given by $(\varphi \land \psi) \leftrightarrow \varphi$.
 	\end{definition}
 	\begin{proposition}
-		$U \models (\varphi \rightarrow \psi)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if for every object $V$ and morphism $\pi : V \to U$ such that $V \models \varphi[a_1 := \alpha_1 \circ \pi, \ldots, a_n := \alpha_n \circ \pi]$, we also have $V \models \psi[a_1 := \alpha_1 \circ \pi, \ldots, \alpha_n \circ \pi]$.
+		$U \models (\varphi \rightarrow \psi)[\vec\alpha]$ if and only if for every object $V$ and morphism $\pi : V \to U$ such that $V \models \varphi[\pi^* \vec\alpha]$, we also have $V \models \psi[\pi^* \vec\alpha]$.
 		\begin{proof}
 			($\Rightarrow$): Since $U \models ((\varphi \land \psi) \leftrightarrow \varphi)$, and $V \models \varphi$, we conclude $V \models (\varphi \land \psi)$; therefore, $V \models \psi$.
 			
@@ -295,11 +310,11 @@
 	\subsection{Selection and Singleton Subsets}
 	
 	\begin{definition}
-		Suppose $\varphi$ is a term of type $\Omega$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$.  Then $\{ x : X \mid \varphi \}$ is the term of type $PX$ with free variables $a_1:A_1, \ldots, a_n:A_n$ constructed as follows: from $\alpha_i \in \Hom(U, A_i)$, we build a morphism of functors $\Hom({-}, U) \times \Hom({-}, X) \to \Hom({-}, \Omega)$ which sends $\pi \in \Hom(V, U)$ and $x \in \Hom(V, X)$ to $\varphi(x, \alpha_1 \circ \pi, \ldots, \alpha_n \circ \pi)$.  This is equivalent to a morphism $U \times X \to \Omega$, which corresponds to a subobject of $U \times X$, which in turn corresponds to a morphism in $\Hom(U, PX)$.
+		Suppose $\Gamma$ is a context, and $\varphi$ is a term of type $\Omega$ in context $\Gamma, x : X$.  Then $\{ x : X \mid \varphi \}$ is the term of type $PX$ in context $\Gamma$ constructed as follows: from $\vec\alpha \in \Gamma(U)$, we build a morphism of functors $\Hom({-}, U) \times \Hom({-}, X) \to \Hom({-}, \Omega)$ which sends $\pi \in \Hom(V, U)$ and $x \in \Hom(V, X)$ to $\varphi(\pi^* \vec\alpha, x)$.  This is equivalent to a morphism $U \times X \to \Omega$, which corresponds to a subobject of $U \times X$, which in turn corresponds to a morphism in $\Hom(U, PX)$.
 	\end{definition}
 	
 	\begin{definition}
-		Suppose $\tau$ is a term of type $X$ with free variables $a_1:A_1, \ldots, a_n:A_n$.  Then $\{ \tau \}$ is the term of type $PX$ with the same set of free variables corresponding to the natural transformation $\prod_{i=1}^n \Hom({-}, A_i) \to \Sub(A_1 \times \cdots \times A_n \times X)$ mapping $(\alpha_1, \ldots, \alpha_n)$ to the subobject $(\pi_1, \ldots, \pi_n, \tau(\alpha_1, \ldots, \alpha_n)) : A_1 \times \cdots \times A_n \to A_1 \times \cdots \times A_n \times X$.
+		Suppose $\tau$ is a term of type $X$ in context $\Gamma$.  Then $\{ \tau \}$ is the term of type $PX$ in the same context constructed as follows: from $\vec\alpha \in \Gamma(U)$, form the subobject of $U \times X$ given by the graph of $\tau(\vec\alpha) : U \to X$, i.e.~the subobject $(\id_U, \tau(\vec\alpha)) : U \to U \times X$, and then convert that into the equivalent morphism in $\Hom(U, PX)$.
 		
 		As a special case, $\{ x \}$ is a term of type $PX$ with free variable $x : X$.  This corresponds to a morphism $\{ \cdot \} : X \to PX$.
 	\end{definition}
@@ -315,12 +330,13 @@
 	\subsection{Universal Quantifier}
 	
 	\begin{definition}
-		Suppose $\varphi$ is a term of type $\Omega$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$.  Then $\forall x:X, \varphi$ is the term of type $\Omega$ with free variables $a_1:A_1, \ldots, a_n:A_n$ given by $\{ x:X \mid \varphi \} = \{ x:X \mid \top \}$.
+		Suppose $\Gamma$ is a context, and $\varphi$ is a term of type $\Omega$ in context $\Gamma, x : X$.  Then $\forall x:X, \varphi$ is the term of type $\Omega$ in context $\Gamma$ given by
+		$$(\forall x:X, \varphi) := (\{ x:X \mid \varphi \} = \{ x:X \mid \top \}).$$
 	\end{definition}
 	\begin{proposition}
-		$U \models (\forall x:X, \varphi)[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if for each object $V$, morphism $\pi : V \to U$, and generalized element $x \in \Hom(V, X)$, we have $V \models \varphi[x := x, a_1 := \alpha_1 \circ \pi, \ldots, a_n := \alpha_n \circ \pi]$.
+		$U \models (\forall x:X, \varphi)[\vec\alpha]$ if and only if for each object $V$, morphism $\pi : V \to U$, and generalized element $x \in \Hom(V, X)$, we have $V \models \varphi[(\pi^* \vec\alpha, x)]$.
 		\begin{proof}
-			We have $U \models (\forall x:X, \varphi)(a_1 := \alpha_1, \ldots, a_n := \alpha_n)$ if and only if the subobject of $U\times X$ is the full subobject $\id_{U\times X}$, which is equivalent to the morphism $U\times X \to \Omega$ being equal to $\top_U \circ \pi_1 : U\times X \to U \to \Omega$.  That, in turn, is equivalent to the morphism of functors $\Hom({-}, U) \times \Hom({-}, X) \to \Hom({-}, \Omega)$ being equal to the natural transformation which for each object $V$, morphism $\pi \in \Hom(V, U)$, and morphism $x \in \Hom(V, X)$ maps $(\pi, x) \mapsto \top_V$.
+			We have $U \models (\forall x:X, \varphi)[\vec\alpha]$ if and only if the subobject of $U\times X$ is the full subobject $\id_{U\times X}$, which is equivalent to the morphism $U\times X \to \Omega$ being equal to $\top_U \circ \pi_1 : U\times X \to U \to \Omega$.  That, in turn, is equivalent to the morphism of functors $\Hom({-}, U) \times \Hom({-}, X) \to \Hom({-}, \Omega)$ being equal to the natural transformation which for each object $V$, morphism $\pi \in \Hom(V, U)$, and morphism $x \in \Hom(V, X)$ maps $(\pi, x) \mapsto \top_V$.
 		\end{proof}
 	\end{proposition}
 	
@@ -335,36 +351,38 @@
 	\subsection{Contradiction}
 	
 	\begin{definition}
-		$\bot$ will be the term of type $\Omega$ (with any number of desired free variables) defined by $\forall p : \Omega, p$ (where $p$ is a fresh free variable not in the desired set of free variables).
+		$\bot$ will be the term of type $\Omega$ (in any desired context) defined by $$\bot := (\forall p : \Omega, p)$$ (where $p$ is a fresh free variable distinct from any other free variables implicit in the specification of $\Omega$).
 	\end{definition}
 	\begin{proposition}
-		$U \models \bot[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if for every object $V$ with a morphism to $U$, $V$ is an initial object of the topos.
+		$U \models \bot[\vec\alpha]$ if and only if for every object $V$ with a morphism to $U$, $V$ is an initial object of the topos.
 		\begin{proof}
 			($\Rightarrow$) Since $\models$ is stable under pullbacks, it suffices to show the case $V = U$.  Now suppose $X$ is any other object of the category.  Then we first have a morphism $U \to PX$ corresponding to the subobject $\id_{U\times X}$ of $U\times X$.  Now the pullback of the subobject $\{ \cdot \} : X \hookrightarrow PX$ corresponds to a morphism $U \to \Omega$.  Applying the assumption with $p$ being this morphism, we see that it is equal to $\top_U$, so the pullback is in fact the full subobject $\id_U$.  From this, we get a morphism $U \to X$.
 			
-			On the other hand, if we have any two morphisms $x_1, x_2 : U \to X$, let $p : U \to \Omega$ correspond to the equalizer of $x_1$ and $x_2$.  Then by the assumption, $U \models p[p := p, a_1 := \alpha_1, \ldots, a_n := \alpha_n]$, implying that $p = \top_U$; thus, the equalizer of $x_1$ and $x_2$ is the full subobject of $U$, so $x_1 = x_2$.
+			On the other hand, if we have any two morphisms $x_1, x_2 : U \to X$, let $p : U \to \Omega$ correspond to the equalizer of $x_1$ and $x_2$.  Then by the assumption, $U \models p[(\vec\alpha, p)]$, implying that $p = \top_U$; thus, the equalizer of $x_1$ and $x_2$ is the full subobject of $U$, so $x_1 = x_2$.
 			
-			($\Leftarrow$) Let $\pi : V \to U$ be any morphism and $p : V \to \Omega$ any generalized element.  Then since $V$ is initial, $p = \top_V$, so $V \models p[p:=p, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+			($\Leftarrow$) Let $\pi : V \to U$ be any morphism and $p : V \to \Omega$ any generalized element.  Then since $V$ is initial, $p = \top_V$, so $V \models p[(\vec\alpha, p)]$.
 		\end{proof}
 	\end{proposition}
 	{\bf Remark:} We will see later that any object of a topos with a morphism to an initial object is itself initial.  Therefore, the latter condition will be equivalent to $U$ being initial.
 	
 	Now that we have definitions of $\bot$ and $\rightarrow$, we can define $\lnot \varphi$ as usual as $\varphi \rightarrow \bot$.  From the above, we immediately get:
 	\begin{corollary}
-		$U \models \lnot \varphi[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if for each $\pi : V \to U$ such that $V \models \varphi[a_1 := \pi^* \alpha_1, \ldots, a_n := \pi^* \alpha_n]$, $V$ is initial.
+		$U \models \lnot \varphi[\vec\alpha]$ if and only if for each $\pi : V \to U$ such that $V \models \varphi[\pi^*\vec\alpha]$, $V$ is initial.
 	\end{corollary}
 	
 	\subsection{Disjunction}
 	
 	\begin{definition}
-		Let $\varphi$ and $\psi$ be two terms of type $\Omega$ with the same set of free variables $a_1:A_1, \ldots, a_n:A_n$.  Then $\varphi \lor \psi$ will be the term of type $\Omega$ with the same set of free variables defined by $\forall r : \Omega, (\varphi \rightarrow r) \rightarrow ((\psi \rightarrow r) \rightarrow r)$ (where $r$ is a fresh free variable not in the set $a_1, \ldots, a_n$).
+		Let $\varphi$ and $\psi$ be two terms of type $\Omega$ in the same context $\Gamma$.  Then $\varphi \lor \psi$ will be the term of type $\Omega$ in context $\Gamma$ defined by
+		$$(\varphi \lor \psi) := [\forall r : \Omega, (\varphi \rightarrow r) \rightarrow ((\psi \rightarrow r) \rightarrow r)]$$
+		(where $r$ is a fresh free variable disjoint from $\Gamma$).
 	\end{definition}
 	\begin{proposition}
-		$U \models (\varphi \lor \psi)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$ if and only if for each morphism $\pi : V \to U$, there exist $\sigma_1 : W_1 \to V$ and $\sigma_2 : W_2 \to V$ such that $W_1 \models \varphi[\alpha_1\circ \pi\circ \sigma_1, \ldots, \alpha_n\circ \pi\circ \sigma_1]$, $W_2 \models \psi[\alpha_1 \circ \pi\circ \sigma_2, \ldots, \alpha_n \circ \pi \circ \sigma_2]$, and $\sigma_1, \sigma_2$ are an epimorphic family (i.e. whenever $x_1, x_2 : V \to X$ satisfy $x_1 \circ \sigma_1 = x_2 \circ \sigma_1$ and $x_1 \circ \sigma_2 = x_2 \circ \sigma_2$, then $x_1 = x_2$).
+		$U \models (\varphi \lor \psi)[\vec\alpha]$ if and only if for each morphism $\pi : V \to U$, there exist $\sigma_1 : W_1 \to V$ and $\sigma_2 : W_2 \to V$ such that $W_1 \models \varphi[\sigma_1^* (\pi^* \alpha_1)]$, $W_2 \models \psi[\sigma_2^* (\pi^* \alpha_1)]$ and $\sigma_1, \sigma_2$ are an epimorphic family (i.e. whenever $x_1, x_2 : V \to X$ satisfy $x_1 \circ \sigma_1 = x_2 \circ \sigma_1$ and $x_1 \circ \sigma_2 = x_2 \circ \sigma_2$, then $x_1 = x_2$).
 		\begin{proof}
-			($\Rightarrow$): Since $\models$ is stable under pullbacks, it suffices to show the case $V=U$, $\pi = \id_U$.  Let $\sigma_1 : W_1 \to U$ be the subobject of $U$ corresponding to $\varphi(\alpha_1, \ldots, \alpha_n)$, and $\sigma_2 : W_2 \to U$ the subobject of $U$ corresponding to $\psi(\alpha_1, \ldots, \alpha_n)$.  It is easy to see that $W_1\models\varphi[\alpha_1\circ\sigma_1, \ldots, \alpha_n\circ\sigma_1]$ and $W_2\models\psi[\alpha_1\circ\sigma_2, \ldots, \alpha_n\circ\sigma_2]$.  It remains to check that $\sigma_1, \sigma_2$ are an epimorphic family.  To see this, suppose $x_1, x_2 : U \to X$ are as in the specification, and consider $r : U \to \Omega$ corresponding to the equalizer of $x_1$ and $x_2$.  Then we can check that $\varphi \rightarrow r$ evaluates to $\top$ since any $W'\to U$ such that $W' \models \varphi$ factors through $\sigma_1$; similarly, $\psi \rightarrow r$ evaluates to $\top$.  Therefore, by the assumption, we must have $r = \top_U$, so $x_1 = x_2$.
+			($\Rightarrow$): Since $\models$ is stable under pullbacks, it suffices to show the case $V=U$, $\pi = \id_U$.  Let $\sigma_1 : W_1 \to U$ be the subobject of $U$ corresponding to $\varphi(\vec\alpha)$, and $\sigma_2 : W_2 \to U$ the subobject of $U$ corresponding to $\psi(\vec\alpha)$.  It is easy to see that $W_1\models\varphi[\sigma_1^*(\vec\alpha)]$ and $W_2\models\psi[\sigma_2^*(\vec\alpha)]$.  It remains to check that $\sigma_1, \sigma_2$ are an epimorphic family.  To see this, suppose $x_1, x_2 : U \to X$ are as in the specification, and consider $r : U \to \Omega$ corresponding to the equalizer of $x_1$ and $x_2$.  Then we can check that $\varphi \rightarrow r$ evaluates to $\top$ since any $W'\to U$ such that $W' \models \varphi$ factors through $\sigma_1$; similarly, $\psi \rightarrow r$ evaluates to $\top$.  Therefore, by the assumption, we must have $r = \top_U$, so $x_1 = x_2$.
 			
-			($\Leftarrow$): For any $\pi:V\to U$ and $r\in \Hom(V, \Omega)$, choose $W_1, \sigma_1, W_2, \sigma_2$ as in the hypothesis, and suppose $V \models (\phi \rightarrow r)[r:=r, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$ and $V\models (\psi\rightarrow r)[r:=r, a_1:=\alpha_1\circ \pi, \ldots, a_n:=\alpha_n\circ \pi]$.  Then since $W_1 \models (\phi \rightarrow r)[r:=r\circ\sigma_1, a_1:=\alpha_1\circ\pi\circ\sigma_1, \ldots, a_n:=\alpha_n\circ\pi\circ\sigma_n]$, we must have $r \circ \sigma_1 = \top_{W_1} = \top_V \circ \sigma_1$.  Similarly, $r \circ \sigma_2 = \top_V \circ \sigma_2$.  Therefore, since we are assuming $\sigma_1, \sigma_2$ are an epimorphic family, we have $r = \top_V$, so $V \models r[r:=r, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+			($\Leftarrow$): For any $\pi:V\to U$ and $r\in \Hom(V, \Omega)$, choose $W_1, \sigma_1, W_2, \sigma_2$ as in the hypothesis, and suppose $V \models (\phi \rightarrow r)[(\vec\alpha, r)]$ and $V\models (\psi\rightarrow r)[(\vec\alpha, r)]$.  Then since $W_1 \models (\phi \rightarrow r)[(\sigma_1^*(\pi^*\vec\alpha), \sigma_1^* r)]$, we must have $r \circ \sigma_1 = \top_{W_1} = \top_V \circ \sigma_1$.  Similarly, $r \circ \sigma_2 = \top_V \circ \sigma_2$.  Therefore, since we are assuming $\sigma_1, \sigma_2$ are an epimorphic family, we have $r = \top_V$, so $V \models r[(\pi^* \vec\alpha, r)]$.
 		\end{proof}
 	\end{proposition}
 	{\bf Remark:} We will see later that in a topos, finite epimorphic families are stable under pullback; therefore, in fact the latter condition is equivalent to the special case where $V=U$ and $\pi = \id_U$.
@@ -372,16 +390,18 @@
 	\subsection{Existential Quantifier}
 	
 	\begin{definition}
-		Let $\varphi$ be a term of type $\Omega$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$.  Then $\exists x:X, \varphi$ will be the term of type $\Omega$ with free variables $a_1:A_1, \ldots, a_n:A_n$ defined by $\forall q:\Omega, (\forall x:X, \varphi \rightarrow q) \rightarrow q$ (where $q$ is a fresh free variable not in the set $x, a_1, \ldots, a_n$).
+		Let $\Gamma$ be a context, and $\varphi$ a term of type $\Omega$ in context $\Gamma, x : X$.  Then $\exists x:X, \varphi$ will be the term of type $\Omega$ in context $\Gamma$ defined by
+		$$(\exists x:X, \varphi) := [\forall q:\Omega, (\forall x:X, \varphi \rightarrow q) \rightarrow q]$$
+		(where $q$ is a fresh free variable disjoint from $\Gamma, x$).
 	\end{definition}
 	\begin{proposition}
-		$U \models (\exists x:X, \varphi)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$ if and only if for each morphism $\pi : V \to U$, there exists an epimorphism $\sigma : W \to V$ and a generalized element $x \in \Hom(W, X)$ such that $W \models \varphi[x:=x, a_1:=\alpha_1\circ\pi\circ\sigma, \ldots, a_n:=\alpha_n\circ\pi\circ\sigma]$.
+		$U \models (\exists x:X, \varphi)[\vec\alpha]$ if and only if for each morphism $\pi : V \to U$, there exists an epimorphism $\sigma : W \to V$ and a generalized element $x \in \Hom(W, X)$ such that $W \models \varphi[(\sigma^*(\pi^*\vec\alpha), x)]$.
 		\begin{proof}
-			($\Rightarrow$): Since $\models$ is stable under pullback, it suffices to show the case where $V = U$ and $\pi = \id_U$.  Now let us consider $W_0 := U\times X$ and $x_0 : W_0 \to X$, $\sigma_0 : W_0 \to U$ the projections.  Then $\varphi(x_0, \alpha_1\circ \sigma_0, \ldots, \alpha_n \circ \sigma_0) \in \Hom(W_0, \Omega)$ corresponds to a subobject $i_W : W \hookrightarrow W_0$.  By construction, we have $W \models \varphi[x:=x_0\circ \sigma_0, a_1:=\alpha_1\circ \sigma_0\circ i_W, \ldots, a_n:=\alpha_n\circ \sigma_0\circ i_W]$.  We claim that $\sigma_0 \circ i_W$ is an epimorphism.
+			($\Rightarrow$): Since $\models$ is stable under pullback, it suffices to show the case where $V = U$ and $\pi = \id_U$.  Now let us consider $W_0 := U\times X$ and $x_0 : W_0 \to X$, $\sigma_0 : W_0 \to U$ the projections.  Then $\varphi(\sigma_0^* \vec\alpha, x_0) \in \Hom(W_0, \Omega)$ corresponds to a subobject $i_W : W \hookrightarrow W_0$.  By construction, we have $W \models \varphi[(i_W^*(\sigma_0^* \vec\alpha), i_W^* x_0)]$.  We claim that $\sigma_0 \circ i_W$ is an epimorphism.
 			
-			To see this, suppose we have two morphisms $f, g : U \to Y$ such that $f\circ \sigma_0 \circ i_W = g\circ \sigma_0 \circ i_W$, and let $q \in \Hom(U, \Omega)$ correspond to the equalizer of $f$ and $g$.  Then for any $\pi' : V' \to U$ and $x' \in \Hom(V', X)$ such that $V' \models \varphi[x:=x', a_1:=\alpha_1\circ \pi', \ldots, a_n:=\alpha_n\circ \pi']$, we must have $(\pi', x') \in \Hom(V', W_0)$ factors through $W$.  As a result, $f \circ \pi' = g \circ \pi'$, so $V' \models q[q:=q, \ldots]$.  This shows that $U \models (\forall x:X, \varphi \rightarrow q)[q:=q, a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$.  We may conclude that $U \models q[q:=q, \ldots]$, so $f = g$.
+			To see this, suppose we have two morphisms $f, g : U \to Y$ such that $f\circ \sigma_0 \circ i_W = g\circ \sigma_0 \circ i_W$, and let $q \in \Hom(U, \Omega)$ correspond to the equalizer of $f$ and $g$.  Then for any $\pi' : V' \to U$ and $x' \in \Hom(V', X)$ such that $V' \models \varphi[(\pi'^*(\vec\alpha), x')]$, we must have $(\pi', x') \in \Hom(V', W_0)$ factors through $W$.  As a result, $f \circ \pi' = g \circ \pi'$, so $V' \models q[(\pi'^*(\vec\alpha), \pi'^*(q), x')]$.  This shows that $U \models (\forall x:X, \varphi \rightarrow q)[(\vec\alpha, q)]$.  We may conclude that $U \models q[(\vec\alpha, q)]$, so $f = g$.
 			
-			($\Leftarrow$): Suppose we have a morphism $\pi\in \Hom(V, U)$ and a generalized element $q \in \Hom(V, \Omega)$, such that $V \models (\forall x:X, \varphi \rightarrow q)[q:=q, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.  Choose an epimorphism $\sigma : W \to V$ and generalized element $x\in \Hom(W, X)$ as in the hypothesis.  Then since $W\models\varphi[x:=x, q:=q, a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$, we also have $W\models q[x:=x, q:=q\circ\sigma, a_1:=\alpha_1\circ\pi\circ\sigma, \ldots, a_n:=\alpha_n\circ\pi\circ\sigma]$, i.e. $q\circ \sigma = \top_W = \top_V\circ\sigma$.  Since $\sigma$ is an epimorphism, it follows that $V\models q[q:=q, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+			($\Leftarrow$): Suppose we have a morphism $\pi\in \Hom(V, U)$ and a generalized element $q \in \Hom(V, \Omega)$, such that $V \models (\forall x:X, \varphi \rightarrow q)[(\pi^* \vec\alpha, q)]$.  Choose an epimorphism $\sigma : W \to V$ and generalized element $x\in \Hom(W, X)$ as in the hypothesis.  Then since $W\models\varphi[(\sigma^* (\pi^* \vec\alpha), \sigma^* q, x)]$, we also have $W\models q[(\sigma^* (\pi^* \vec\alpha), \sigma^* q, x)]$.  Since $\sigma$ is an epimorphism, it follows that $V\models q[(\pi^*\vec\alpha, q)]$.
 		\end{proof}
 	\end{proposition}
 	{\bf Remark:} We will see later that in a topos, epimorphisms are stable under pullback; therefore, in fact the latter condition is equivalent to the special case where $V=U$ and $\pi = \id_U$.
@@ -399,15 +419,17 @@
 	\subsection{Unique Existential Quantifier}
 	
 	\begin{definition}
-		Let $\varphi$ be a term of type $\Omega$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$.  Then $\exists! x:X, \varphi$ will be the term of type $\Omega$ with free variables $a_1:A_1, \ldots, a_n:A_n$ defined as $\chi_{\{ \cdot \}}(\{ x:X \mid \varphi \})$ where $\chi_{\{ \cdot \}}$ is the morphism $PX \to \Omega$ corresponding to the singleton subobject $\{ \cdot \} : X \hookrightarrow PX$.
+		Let $\varphi$ be a term of type $\Omega$ in context $\Gamma, x:X$.  Then $\exists! x:X, \varphi$ will be the term of type $\Omega$ in context $\Gamma$ defined as
+		$$(\exists! x:X, \varphi) := \chi_{\{ \cdot \}}(\{ x:X \mid \varphi \})$$
+		where $\chi_{\{ \cdot \}}$ is the morphism $PX \to \Omega$ corresponding to the singleton subobject $\{ \cdot \} : X \hookrightarrow PX$.
 	\end{definition}
 	\begin{proposition}
-		$U \models (\exists! x:X, \varphi)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$ if and only if for every morphism $\pi : V \to U$ there exists a unique $x \in \Hom(V, X)$ such that $V \models \varphi[x:=x, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+		$U \models (\exists! x:X, \varphi)[\vec\alpha]$ if and only if for every morphism $\pi : V \to U$ there exists a unique $x \in \Hom(V, X)$ such that $V \models \varphi[(\pi^*\vec\alpha, x)]$.
 		
 		\begin{proof}
-			($\Rightarrow$): From the hypothesis, we see that the morphism $V \to PX$ induced by $\varphi$ and $\alpha_1 \circ \pi, \ldots, \alpha_n \circ \pi$ factors uniquely through $X$, and the unique factor map $V \to X$ gives $x$.
+			($\Rightarrow$): From the hypothesis, we see that the morphism $V \to PX$ induced by $\varphi$ and $\pi^* \vec\alpha$ factors uniquely through $X$, and the unique factor map $V \to X$ gives $x$.
 			
-			($\Leftarrow$): Let $x_0 \in \Hom(U, X)$ be the unique such $x$ for the case $V = U$ and $\pi = \id_U$.  Then from the hypotheses, we can conclude that $\{ x:X \mid \varphi \}(\alpha_1, \ldots, \alpha_n) \in \Hom(U, PX)$ is equal to $\{ \cdot \} \circ x_0$, so composing with $\chi_{\{ \cdot \}}$ will give $\top_U$.
+			($\Leftarrow$): Let $x_0 \in \Hom(U, X)$ be the unique such $x$ for the case $V = U$ and $\pi = \id_U$.  Then from the hypotheses, we can conclude that $\{ x:X \mid \varphi \}(\vec\alpha) \in \Hom(U, PX)$ is equal to $\{ \cdot \} \circ x_0$, so composing with $\chi_{\{ \cdot \}}$ will give $\top_U$.
 		\end{proof}
 	\end{proposition}
 	
@@ -424,16 +446,17 @@
 	Note that we can also prove the equivalence of this interpretation of $\exists!$ to the usual definition as a conjunction of existence and uniqueness:
 	
 	\begin{proposition}
+		For any assignment $\vec\alpha \in \Gamma(U)$,
 		\begin{align*}
-			1 \models & \forall a_1:A_1, \ldots, \forall a_n:A_n, \\
-			& (\exists! x:X, \varphi) \leftrightarrow \\
-			& [(\exists x:X, \varphi) \wedge \\
-			& (\forall x_1:X, \forall x_2:X, \varphi[x:=x_1] \land \varphi[x:=x_2] \rightarrow x_1 = x_2)].
+			U \models & [(\exists! x:X, \varphi) \leftrightarrow \\
+			& \,[(\exists x:X, \varphi) \wedge \\
+			& \,\,(\forall x_1:X, \forall x_2:X, \varphi[x:=x_1] \land \varphi[x:=x_2] \rightarrow x_1 = x_2)]] \\
+			& [\vec\alpha].
 		\end{align*}
-		Here $\varphi[x:=x_1]$ is the term with free variables $x_1:X, x_2:X, a_1:A_1, \ldots, a_n:A_n$ gotten by composing $\varphi$ with $\Hom({-}, X) \times \Hom({-}, X) \times \prod_{i=1}^n \Hom({-}, A_i) \to \Hom({-}, X) \times \prod_{i=1}^n \Hom({-}, A_i), (x_1, x_2, \alpha_1, \ldots, \alpha_n) \mapsto (x_1, \alpha_1, \ldots, \alpha_n)$, and similarly for $\varphi[x:=x_2]$.
+		Here $\varphi[x:=x_1]$ is the term in context $\Gamma, x_1 : X, x_2 : X$ gotten by composing $\varphi$ with $\Gamma({-}) \times \Hom({-}, X) \times \Hom({-}, X) \to \Gamma({-}) \times \Hom({-}, X), (\vec\alpha, x_1, x_2) \mapsto (\vec\alpha, x_1)$, and similarly for $\varphi[x:=x_2]$.
 		
 		\begin{proof}
-			Here we will focus on the interesting part, which is the $\leftarrow$ part.  Thus, suppose we have $U \models (\exists x:X, \varphi)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$ and $U \models (\forall x_1:X, \forall x_2:X, \phi[x:=x_1] \land \phi[x:=x_2] \rightarrow x_1 = x_2)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$.  Then from the first, we can find an epimorphism $\pi : V \to U$ and $x \in \Hom(V, X)$ such that $V \models \phi[x:=x, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.  Now from the second, we see that $V \models (\forall x_2:X, \phi[x:=x_2] \rightarrow x = x_2)[x:=x, a_1:=\alpha_1 \circ \pi, \ldots, a_n:=\alpha_n \circ \pi]$.  From this, we can conclude that $\{ x:X \mid \varphi \}(\alpha_1\circ\pi, \ldots, \alpha_n\circ\pi) = \{ x \}$ as elements of $\Hom(V, PX)$.  It follows that $V \models (\exists! x:X, \varphi)[a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.  Since $\pi$ was an epimorphism, that implies that $U \models (\exists! x:X, \varphi)[a_1:=\alpha_1\circ \pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+			Here we will focus on the interesting part, which is the $\leftarrow$ part.  Thus, suppose we have $U \models (\exists x:X, \varphi)[\vec\alpha]$ and $U \models (\forall x_1:X, \forall x_2:X, \phi[x:=x_1] \land \phi[x:=x_2] \rightarrow x_1 = x_2)[\vec\alpha]$.  Then from the first, we can find an epimorphism $\pi : V \to U$ and $x \in \Hom(V, X)$ such that $V \models \phi[(\pi^* \alpha, x)]$.  Now from the second, we see that $V \models (\forall x_2:X, \phi[x:=x_2] \rightarrow x = x_2)[(\pi^* \alpha, x)]$.  From this, we can conclude that $\{ x:X \mid \varphi \}(\vec\alpha) = \{ x \}$ as elements of $\Hom(V, PX)$.  It follows that $V \models (\exists! x:X, \varphi)[\pi^*\alpha]$.  Since $\pi$ was an epimorphism, that implies that $U \models (\exists! x:X, \varphi)[\vec\alpha]$.
 		\end{proof}
 	\end{proposition}
 	
@@ -444,18 +467,32 @@
 	Once we've built up these methods for constructing morphisms from an object to $\Omega$, we can use them to construct objects of the topos in a way reminiscent of the selection axiom of ZFC set theory.
 	
 	\begin{definition}
-		Let $X$ be an object a topos, and let $S$ be a term of type $PX$ with no free variables.  Then $\Sigma S$ will be the subobject of $X$ corresponding to $S_1$ via the bijection $\Hom(1, PX) \simeq \Sub(1 \times X) \simeq \Sub(X)$.  In accordance with the next definition, we may refer to the inclusion map as $\drop$.
+		Let $X$ be an object a topos, and let $S$ be a term of type $PX$ in the empty context.  Then $\Sigma S$ will be the subobject of $X$ corresponding to $S_1$ via the bijection $\Hom(1, PX) \simeq \Sub(1 \times X) \simeq \Sub(X)$.  In accordance with definition below of $\lift$, we may refer to the inclusion map as $\drop$.
 		
 		Note that in a great many cases, this will be applied to form $\Sigma \{ x:X \mid \varphi \}$ where $\varphi$ is a term of type $\Omega$ with only one free variable $x:X$.  In this case, the term corresponds to a morphism $X \to \Omega$, and $\Sigma \{ x:X \mid \varphi \}$ is the corresponding subobject of $X$.
 	\end{definition}
 	
+	In order to form a term of type $\Sigma \{ x:X \mid \varphi \}$, we will first need to specify a condition of which terms of type $X$ are permissible to use.
+	
 	\begin{definition}
-		Suppose $\tau$ is a term of type $X$ with free variables $a_1:A_1, \ldots, a_n:A_n$, $\varphi$ is a term of type $\Omega$ with the same free variables, and suppose that we have $1 \models \forall a_1:A_1, \ldots, \forall a_n:A_n, \varphi$.  Then $\lift(\tau)$ is the term of type $\Sigma \{ x:X \mid \varphi \}$ sending any tuple $(\alpha_i) \in \prod_{i=1}^n \Hom(U, A_i)$ to the unique factorization of $\tau(\alpha_1, \ldots, \alpha_n)$ through $\Hom(U, \Sigma \{ x:X \mid \phi \})$.
+		Suppose $\Gamma$ is a context, and $\varphi$ is a term of type $\Omega$ in context $\Gamma$.  Then $\Gamma$ (semantically) entails the truth of $\varphi$, denoted $\Gamma \models \varphi \mathrm{~true}$, if for each object $U$ and assignment $\vec\alpha \in \Gamma(U)$, we have $U \models \varphi[\vec\alpha]$.
+	\end{definition}
+	
+	{\bf Remark:} Note the unfortunate overloading of the $\models$ symbol here.  The first meaning, $U \models \varphi[\vec\alpha]$, is considered to be akin to the ``models'' meaning of the symbol from first order logic, where we define when a model $M$ and assignment $\vec x$ gives $M \models \varphi[\vec x]$.  The second meaning, $\Gamma \models \varphi \mathrm{~true}$, is considered to be akin to the semantic entailment of a first-order logical formula $\varphi$ from a theory or context $\Gamma$.
+	
+	\begin{definition}
+		Suppose $\tau$ is a term of type $X$ in context $\Gamma$, and $\varphi$ is a term of type $\Omega$ in context $x:X$ such that $\Gamma \models \varphi[x := \tau] \mathrm{~true}$.  Then $\lift(\tau)$ is the term of type $\Sigma \{ x:X \mid \varphi \}$ in context $\Gamma$ sending any assignment $\vec\alpha \in \Gamma(U)$ to the unique factorization of $\tau(\vec\alpha)$ through $\Hom(U, \Sigma \{ x:X \mid \varphi \})$.
+	\end{definition}
+	
+	Note that in first-order logic, in order to prove entailment of a certain condition, we may need in many cases to assume certain hypotheses in the context.  In our framework for the internal language of a topos, fortunately, it is relatively straightforward to add such assumptions to a context in a similar manner.
+	
+	\begin{definition}
+		Suppose $\Gamma$ is a context, and $\varphi$ is a term of type $\Omega$ in context $\Gamma$.  Then the context $\Gamma, \varphi \mathrm{~true}$ will be the functor which sends an object $U$ to $\{ \vec\alpha \in \Gamma(U) \mid U \models \varphi[\vec\alpha] \}$, and sends a morphism $\pi : V \to U$ to the restriction of $\Gamma(\pi)$.
 	\end{definition}
 	
 	As a special case where $X \simeq \Sigma \{ S:PX \mid \chi_{\{ \cdot \}}(S) \}$ as a subobject of $PX$, we can build terms corresponding to the so-called definite description operator:
 	\begin{definition}
-		Suppose $\varphi$ is a term of type $\Omega$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$, and suppose that $1 \models \forall a_1:A_1, \ldots, \forall a_n:A_n, \exists! x:X, \varphi$.  Then $\iota x:X \mid \varphi$ (to be understood informally as ``the unique $x$ of type $X$ such that $\varphi$'') is the term of type $X$ with free variables $a_1:A_1, \ldots, a_n:A_n$ which sends a tuple $(\alpha_i) \in \prod_{i=1}^n \Hom(U, A_i)$ to the unique factorization of $\{ x:X \mid \varphi \}(\alpha_1, \ldots, \alpha_n)$ through the singleton map $\{ \cdot \} : X \to PX$.
+		Suppose $\varphi$ is a term of type $\Omega$ in context $\Gamma$, and suppose that $\Gamma \models (\exists! x:X, \varphi) \mathrm{~true}$.  Then $\iota x:X \mid \varphi$ (to be understood informally as ``the unique $x$ of type $X$ such that $\varphi$'') is the term of type $X$ in context $\Gamma$ which sends an assignment $\vec\alpha \in \Gamma(U)$ to the unique factorization of $\{ x:X \mid \varphi \}(\vec\alpha)$ through the singleton morphism $\{ \cdot \} : X \to PX$.
 	\end{definition}
 	
 	\section{Basic Topos Properties}
@@ -533,11 +570,11 @@
 	\end{definition}
 	
 	\begin{definition}
-		Suppose we have a term $\varphi$ of type $Y^X$ and a term $\tau$ of type $X$, both with the same set of free variables $a_1:A_1, \ldots, a_n:A_n$.  Then $\varphi(\tau)$ is the term of type $Y$ with the same free variables defined by $\iota y:Y \mid (\tau, y) \in \drop(\varphi)$. 
+		Suppose we have a term $\varphi$ of type $Y^X$ and a term $\tau$ of type $X$, both in the same context $\Gamma$.  Then $\varphi(\tau)$ is the term of type $Y$ in context $\Gamma$ defined by $\iota y:Y \mid (\tau, y) \in \drop(\varphi)$. 
 	\end{definition}
 		
 	\begin{definition}
-		Suppose we have a term $\tau$ of type $Y$ with free variables $x:X, a_1:A_1, \ldots, a_n:A_n$.  Then $\lambda x:X \,.\, \tau$ is the term of type $Y^X$ with free variables $a_1:A_1, \ldots, a_n:A_n$ defined by $\lift(\{ p : X\times Y \mid \exists! x:X, p = (x, \tau) \})$, where $p$ is a fresh free variable not in the set $x, a_1, \ldots, a_n$.
+		Suppose we have a term $\tau$ of type $Y$ in context $\Gamma, x : X$.  Then $\lambda x:X \,.\, \tau$ is the term of type $Y^X$ in context $\Gamma$ defined by $\lift(\{ p : X\times Y \mid \exists! x:X, p = (x, \tau) \})$, where $p$ is a fresh free variable disjoint from $\Gamma, x$.
 	\end{definition}
 	
 	\begin{proposition}
@@ -595,7 +632,7 @@
 	That allows us to make our promised simplification of the Kripke-Joyal semantics for $\exists$:
 	
 	\begin{corollary}
-		$U \models (\exists x:X, \varphi)[a_1:=\alpha_1, \ldots, a_n:=\alpha_n]$ if and only if there exists an epimorphism $\pi : V \to U$ and a generalized element $x \in Hom(V, X)$ such that $V \models \varphi[x:=x, a_1:=\alpha_1\circ\pi, \ldots, a_n:=\alpha_n\circ\pi]$.
+		$U \models (\exists x:X, \varphi)[\vec\alpha]$ if and only if there exists an epimorphism $\pi : V \to U$ and a generalized element $x \in Hom(V, X)$ such that $V \models \varphi[(\pi^* \vec\alpha, x)]$.
 	\end{corollary}
 	
 	\begin{proposition}
@@ -681,7 +718,7 @@
 	Now since any initial object is canonically isomorphic to $0$, this gives the earlier promised simplication of the Kripke-Joyal semantics for $\bot$:
 	
 	\begin{corollary}
-		$U \models \bot[a_1 := \alpha_1, \ldots, a_n := \alpha_n]$ if and only if $U$ is an initial object.
+		$U \models \bot[\vec\alpha]$ if and only if $U$ is an initial object.
 	\end{corollary}
 	
 	For binary coproducts, as a general principle we can construct them in any situation where we have a ``large enough'' container for the two objects to be included as disjoint subobjects.
@@ -722,7 +759,9 @@
 	\end{definition}
 	
 	\begin{proposition}
-		For any object $Y$ of a topos, $\PartialHom({-}, Y)$ is representable by an object $\tilde Y := \Sigma\{ S : PY \mid \forall y_1, y_2:Y, (y_1\in S \land y_2\in S) \rightarrow y_1 = y_2 \}$ called the partial morphism classifier of $Y$, with a given monomorphism $Y \hookrightarrow \tilde Y$ corresponding to $\lambda y:Y \, . \, \lift(\{ y \})$, such that $(Y, \id_Y) : \tilde Y \dashrightarrow Y$ is the universal partial morphism into $Y$.
+		For any object $Y$ of a topos, $\PartialHom({-}, Y)$ is representable by an object
+		$$\tilde Y := \Sigma\{ S : PY \mid \forall y_1, y_2:Y, (y_1\in S \land y_2\in S) \rightarrow y_1 = y_2 \}$$
+		called the partial morphism classifier of $Y$, with a given monomorphism $Y \hookrightarrow \tilde Y$ corresponding to $\lambda y:Y \, . \, \lift(\{ y \})$, such that $(Y, \id_Y) : \tilde Y \dashrightarrow Y$ is the universal partial morphism into $Y$.
 		
 		\begin{proof}
 			We construct a natural transformation $\PartialHom({-}, Y) \to \Hom({-}, \tilde Y)$: given $(X', f) : X \dashrightarrow Y$, then $(i_{X'}, f) : X' \to X \times Y$ is a monomorphism, so it corresponds to a morphism $X \to PY$.  It is straightforward to check that this factors through $\tilde Y$, and that this gives a natural transformation which is inverse to $\Hom({-}, \tilde Y) \to \PartialHom({-}, Y)$ corresponding by Yoneda's lemma to $(Y, \id_Y) : \tilde Y \dashrightarrow Y$.
@@ -781,22 +820,25 @@
 	We can now check that this generalizes to the general case of a slice category over an object of a topos.
 	
 	\begin{proposition}
-		Let $D$ be an object of a topos $\calT$.  Then $\calT / D$ is also a topos, with finite products given as above, and with power objects $P_{\calT / D}(X) \simeq \Sigma \{ p : D \times P_{\calT}(X) \mid \forall x:X, x \in \pi_2(p) \rightarrow \deg(x) = \pi_1(p) \}$.
+		Let $D$ be an object of a topos $\calT$.  Then $\calT / D$ is also a topos, with finite products given as above, and with power objects
+		$$P_{\calT / D}(X) \simeq \Sigma \{ (d, S) : D \times P_{\calT}(X) \mid \forall x:X, x \in S \rightarrow \deg(x) = d \}.$$
+		Here, $\{ (x, y) : X \times Y \mid \varphi \}$ is syntactic sugar for $\{ p : X \times Y \mid \varphi [x := \pi_1(p), y := \pi_2(p)] \}$.
 		
 		\begin{proof}
 			First, note that $f : (X, \deg_X) \to (Y, \deg_Y)$ is a monomorphism in $\calT / D$ if and only if $f$ is a monomorphism in $\calT$; for the forward direction, use the fact that for any test object $U$ and generalized element $x \in \Hom_{\calT}(U, X)$, we can lift $U$ to an object of $\calT / D$ with degree map $\deg_X \circ x$, and then $U \to X$ becomes a morphism in $\calT / D$.  Similarly, if $X$ is any subobject in $\calT$ of $Y$, and $Y$ also has a degree map to $D$, then $X$ lifts to a subobject in $\calT / D$.  Therefore, $\Sub_{\calT / D}(X) \simeq \Sub_{\calT}(X)$.
 			
-			Now, suppose we have two objects $X, Y$ of $\calT / D$ and a subobject $S$ of $X \times_D Y$.  We then define the morphism $X \to P_{\calT / D}(Y)$ to correspond to the term $\lambda x : X \, . \, \lift((\deg(x), \{ y:Y \mid \exists! s:S, \pi_1(s) = x \land \pi_2(s) = y \}))$.  Conversely, given a morphism $f : X \to P_{\calT / D}(Y)$ in $\calT / D$, we can define the corresponding subobject of $X \times_D Y$ as $\Sigma \{ p : X \times_D Y \mid \pi_2(p) \in \pi_2(\drop(f(\pi_1(p)))) \}$.  Here, in the last part, if $p : X \times_D Y$, then $\pi_1(p) : X$, $f(\pi_1(p)) : P_{\calT / D}(Y)$, $\drop(f(\pi_1(p))) : D \times P_{\calT}(Y)$, and $\pi_2(\drop(f(\pi_1(p)))) : P_{\calT}(Y)$, while $\pi_2(p) : Y$.  It now remains to check that these give inverse morphisms of functors, which should be straightforward if long to do using the previously developed Kripke-Joyal semantics.
+			Now, suppose we have two objects $X, Y$ of $\calT / D$ and a subobject $S$ of $X \times_D Y$.  We then define the morphism $X \to P_{\calT / D}(Y)$ to correspond to the term $\lambda x : X \, . \, \lift((\deg(x), \{ y:Y \mid \exists! s:S, \pi_1(s) = x \land \pi_2(s) = y \}))$.  Conversely, given a morphism $f : X \to P_{\calT / D}(Y)$ in $\calT / D$, we can define the corresponding subobject of $X \times_D Y$ as $\Sigma \{ (x, y) : X \times_D Y \mid y \in \pi_2(\drop(f(x))) \}$.  Here, in the last part, if $x : X$, then $f(x) : P_{\calT / D}(Y)$, $\drop(f(x)) : D \times P_{\calT}(Y)$, and $\pi_2(\drop(f(x))) : P_{\calT}(Y)$.  It now remains to check that these give inverse morphisms of functors, which should be straightforward if long to do using the previously developed Kripke-Joyal semantics.
 		\end{proof}
 	\end{proposition}
 	
-	In particular, since the final object of $\calT / D$ is $\id_D : D \to D$, we get that the subobject classifier object of $\calT / D$ is $\Sigma \{ p : D \times P_{\calT}(D) \mid \forall d:D, d \in \pi_2(p) \rightarrow d = \pi_1(p) \}$, with $\mathsf{true}_{\calT / D} : D \to \Omega_{\calT / D}$ corresponding to $\lambda d : D \, . \, \lift((d, \{ d \}))$.  However, intuitively speaking, the condition implies that $\pi_2(p)$ is a subset of the singleton $\{ \pi_1(p) \}$, and that subset is equivalent to the generalized element of $\Omega$ given by $\pi_1(p) \in \pi_2(p)$.  It is straightforward to formalize this argument to show:
+	In particular, since the final object of $\calT / D$ is $\id_D : D \to D$, we get that the subobject classifier object of $\calT / D$ is $\Sigma \{ (d, S) : D \times P_{\calT}(D) \mid \forall d':D, d' \in S \rightarrow d' = d \}$, with $\mathsf{true}_{\calT / D} : D \to \Omega_{\calT / D}$ corresponding to $\lambda d : D \, . \, \lift((d, \{ d \}))$.  However, intuitively speaking, the condition implies that $S$ is a subset of the singleton $\{ d \}$, and that subset is equivalent to the generalized element of $\Omega$ given by $d \in S$.  It is straightforward to formalize this argument to show:
 	
 	\begin{corollary}
-		The subobject classifier object of $\calT / D$ is $\Omega_{\calT / D} \simeq D \times \Omega_{\calT}$, with $\mathsf{true}_{\calT / D} : D \to \Omega_{\calT / D}$ being $(\id_D, \mathsf{true}_D)$.  Given a subobject $X'$ of $X$ in $\calT / D$, the corresponding morphism $X \to \Omega_{\calT / D}$ is $(\deg_X, \chi_{X'})$ where $\chi_{X'} : X \to \Omega_{\calT}$ is the characteristic morphism taken in $\calT$.
+		The subobject classifier object of $\calT / D$ is
+		$$\Omega_{\calT / D} \simeq D \times \Omega_{\calT},$$ with $\mathsf{true}_{\calT / D} : D \to \Omega_{\calT / D}$ being $(\id_D, \mathsf{true}_D)$.  Given a subobject $X'$ of $X$ in $\calT / D$, the corresponding morphism $X \to \Omega_{\calT / D}$ is $(\deg_X, \chi_{X'})$ where $\chi_{X'} : X \to \Omega_{\calT}$ is the characteristic morphism taken in $\calT$.
 	\end{corollary}
 	
-	Now, if we follow through the general construction of exponentials in a topos, we get that $(X \multimap Y)_{\calT / D} \simeq \Sigma\{ p : D \times P(X \times_D Y) \mid (\forall q : X \times_D Y, q \in \pi_2(p) \rightarrow \deg(q) = \pi_1(p)) \land (\forall x:X, \deg(x) = \pi_1(p) \rightarrow \exists! q : X \times_D Y, q \in \pi_2(p) \land \pi_1(q) = x) \}$.  Here, the first condition essentially says that every pair in the subset has the correct degree, and the second condition says that for every $x$ with correct degree, there exists a unique pair in the subset with $x$ as its first coordinate.  The second condition then allows us to construct the evaluation morphism $(X \multimap Y)_{\calT / D} \times_D X \to Y$ as $\lambda p \, . \, \pi_2(\iota q \mid q \in \pi_2(\drop(\pi_1(p))) \land \pi_1(q) = \pi_2(p))$.  Given a $D$-homogeneous morphism $f : Z \times_D X \to Y$, the corresponding morphism $Z \to (X \multimap Y)_{\calT / D}$ corresponds to $\lambda z : Z \, . \, \lift((\deg(z), \{ p : X \times_D Y \mid \exists! q : Z \times_D X, \pi_1(q) = z \land \pi_2(q) = \pi_1(p) \land f(q) = \pi_2(p) \}))$.
+	Now, if we follow through the general construction of exponentials in a topos, we get that $(X \multimap Y)_{\calT / D} \simeq \Sigma\{ (d, f) : D \times P(X \times_D Y) \mid (\forall p : X \times_D Y, p \in f \rightarrow \deg(p) = d) \land (\forall x:X, \deg(x) = d \rightarrow \exists! p \in f, \pi_1(p) = x) \}$.  Here, the first condition essentially says that every pair in the subset has the correct degree, and the second condition says that for every $x$ with correct degree, there exists a unique pair in the subset with $x$ as its first coordinate.  The second condition then allows us to construct the evaluation morphism $(X \multimap Y)_{\calT / D} \times_D X \to Y$ as $\lambda (f, x) \, . \, \pi_2(\iota q \mid q \in \pi_2(\drop(f)) \land \pi_1(q) = x)$.  Given a $D$-homogeneous morphism $f : Z \times_D X \to Y$, the corresponding morphism $Z \to (X \multimap Y)_{\calT / D}$ corresponds to $\lambda z : Z \, . \, \lift((\deg(z), \{ p : X \times_D Y \mid \exists! q : Z \times_D X, \pi_1(q) = z \land \pi_2(q) = \pi_1(p) \land f(q) = \pi_2(p) \}))$.
 	
 	However, there is an alternate construction which is closer to the exponential in $\calT$.  To motivate that, let us first consider the case of $\calT = \Set$.  Then the exponential also becomes much simpler in $\Set^D$ when $D$ is a discrete category; namely, $(F \multimap G)(d) \simeq G(d)^{F(d)}$.  Transporting via the equivalence to $\Set / D$, we see that $(X \multimap Y)_{\Set / D} \simeq \bigsqcup_{d\in D} (X_d \multimap Y_d)_{\Set}$, where $X_d = \{ x \in X \mid \deg(x) = d \}$.  Now each function $X_d \to Y_d$ can be expressed as a partial function $X \dashrightarrow Y$.  Furthermore, the restriction that the domain is exactly $X_d$, and that on this domain it factors through $Y_d$, is equivalent to asserting that the partial morphism $X \dashrightarrow D$ gotten by composing $X \dashrightarrow Y$ with $\deg_Y : Y \to D$ is precisely the one with domain $X_d$ and with constant value $d$; that is also the partial morphism gotten by pulling back the partial morphism $D \dashrightarrow D$ defined on $\{ d \}$ and with value $d$ along $\deg_X$.  In summary, $(X \multimap Y)_{\Set/D} \simeq \{ (f, d) \in (X \to \tilde Y) \times D \mid \widetilde{\deg_Y} \circ f = \delta_d \circ \deg_X \}$ where $\delta_d : D \to \tilde D$ maps $d \mapsto d$ and $d' \mapsto \mathsf{undef}$ for $d' \ne d$.
 	
@@ -804,7 +846,7 @@
 	
 	\begin{proposition}
 		For an object $D$ of a topos $\calT$, let $\delta : D \to (D \multimap \tilde D)$ be the morphism corresponding to $D \times D \dashrightarrow D$ defined on the diagonal subobject via $\pi_1$ (or equivalently via $\pi_2$).  Then for objects $X, Y$ of $\calT / D$, we have
-		$$(X \multimap Y)_{\calT / D} \simeq \Sigma\{ p : (X \multimap \tilde Y)_{\calT} \times D \mid \widetilde{\deg_Y} \circ \pi_1(p) = \delta(\pi_2(p)) \circ \deg_X \}.$$
+		$$(X \multimap Y)_{\calT / D} \simeq \Sigma\{ (f, d) : (X \multimap \tilde Y)_{\calT} \times D \mid \widetilde{\deg_Y} \circ f = \delta(d) \circ \deg_X \}.$$
 		
 		\begin{proof}
 			Given a $D$-homogeneous morphism $Z \to (X \multimap Y)_{\calT} \times D$, let the first component $Z \to (X \multimap \tilde Y)_{\calT}$ be $f$, and we must have the second component $Z \to D$ is $\deg_Z$.  The pair $(f, \deg_Z)$ factors through the given subobject $(X \multimap Y)_{\calT/D}$ if and only if $\widetilde{\deg_Y} \circ f = \delta(\deg_Z) \circ \deg_X$.  Now, if we trace back these generalized elements of $(X \multimap \tilde D)_{\calT}$ to the corresponding partial morphisms $Z \times X \dashrightarrow D$, and $f$ to the corresponding $g : Z \times X \dashrightarrow Y$, then the left hand side corresponds to $\deg_Y \circ g$, and the right hand side corresponds to the partial morphism defined on the pullback of the diagonal of $D\times D$ via $\deg_Z \times \deg_X$, where the morphism is the restriction of $\deg_Z \circ \pi_1$ or of $\deg_X \circ \pi_2$.  Thus, these two partial morphisms being equal is precisely equivalent to $g$ having domain of definition $Z \times_D X$, with the morphism $Z \times_D X \to Y$ being $D$-homogeneous.
@@ -837,7 +879,7 @@
 	\end{definition}
 	
 	\begin{example}
-		If $X$ is a topological space, then we can define a Lawvere-Tierney topology where $j_U : \Omega(U) \to \Omega(U)$ sends an ideal $\mathcal{F}$ of the open subsets of $U$ to the collection of $V \subseteq U$ such that there exists an open cover $\{ W_i \mid i \in I \}$ of $V$ such that each $W_i$ is in $\mathcal{F}$.
+		If $X$ is a topological space, then we can define a Lawvere-Tierney topology on the presheaf topos of functors $\mathsf{Open}(X)^{\op} \to \Set$.  In this Lawvere-Tierney topology, $j_U : \Omega(U) \to \Omega(U)$ sends an ideal $\mathcal{F}$ of the open subsets of $U$ to the collection of $V \subseteq U$ such that there exists an open cover $\{ W_i \mid i \in I \}$ of $V$ such that each $W_i$ is in $\mathcal{F}$.
 	\end{example}
 	
 	\begin{example}
@@ -900,7 +942,7 @@
 	\end{corollary}
 	
 	\begin{proposition}
-		The full subcategory $\Sh(j)$ of $\calT$ consisting of $j$-sheaves is a topos, where finite limits are inherited from $\calT$, and power objects are given by $P_{\Sh(j)}(X) \simeq \Sigma \{ S : P_{\calT}(X) \mid \forall x : X, j(x\in S) \rightarrow x\in S \}$.
+		The full subcategory $\Sh(j)$ of $\calT$ consisting of $j$-sheaves is a topos, where finite limits are inherited from $\calT$, and power objects are given by $$P_{\Sh(j)}(X) \simeq \Sigma \{ S : P_{\calT}(X) \mid \forall x : X, j(x\in S) \rightarrow x\in S \}.$$
 		
 		\begin{proof}
 			Showing that $\Sh(j)$ is closed under finite limits inherited from $\calT$ is straightforward using the definitions.
@@ -918,13 +960,15 @@
 	Now, similarly to what we did for the case of a slice topos, we can present simplified versions of the generic constructions for various related objects.  For instance, a special case of the power object construction above gives:
 	
 	\begin{proposition}
-		The subobject classifier of $\Sh(j)$ is $\Omega_{\Sh(j)} \simeq \Sigma \{ p : \Omega_{\calT} \mid j(p) \rightarrow p \}$.
+		The subobject classifier of $\Sh(j)$ is
+		$$\Omega_{\Sh(j)} \simeq \Sigma \{ p : \Omega_{\calT} \mid j(p) \rightarrow p \}.$$
 	\end{proposition}
 	
 	For exponentials in the cartesian closed category $\Sh(j)$, we have:
 	
 	\begin{proposition}
-		If $Y$ is a $j$-sheaf and $X$ is any object, then $(X \multimap Y)_{\calT}$ is also a $j$-sheaf.  If in addition $X$ is a $j$-sheaf, then $(X \multimap Y)_{\Sh(j)} \simeq (X \multimap Y)_{\calT}$.
+		If $Y$ is a $j$-sheaf and $X$ is any object, then $(X \multimap Y)_{\calT}$ is also a $j$-sheaf.  If in addition $X$ is a $j$-sheaf, then
+		$$(X \multimap Y)_{\Sh(j)} \simeq (X \multimap Y)_{\calT}.$$
 		
 		\begin{proof}
 			For the first point, suppose we have $V \subseteq U$ dense.  Then $V \times X$ is also dense in $U\times X$, so we get $\Hom(V, X \multimap Y) \simeq \Hom(V\times X, Y) \simeq \Hom(U\times X, Y) \simeq \Hom(U, X \multimap Y)$, and it is straightforward to show that this bijection is precisely the one induced by composition with the inclusion map $V \hookrightarrow U$.
@@ -952,7 +996,8 @@
 	Finally, partial morphisms in $\Sh(j)$ are exactly equivalent to the partial morphisms in $\calT$ between the corresponding objects whose domains of definition are closed subobjects.  From this observation, we can conclude:
 	
 	\begin{proposition}
-		For any object $Y$ of $\Sh(j)$, $(\tilde Y)_{\Sh(j)} \simeq \Sigma \{ \tilde y : (\tilde Y)_{\calT} \mid j(\mathsf{def}(\tilde y)) \rightarrow \mathsf{def}(\tilde y) \}$.
+		For any object $Y$ of $\Sh(j)$,
+		$$(\tilde Y)_{\Sh(j)} \simeq \Sigma \{ \tilde y : (\tilde Y)_{\calT} \mid j(\mathsf{def}(\tilde y)) \rightarrow \mathsf{def}(\tilde y) \}.$$
 	\end{proposition}
 	
 	\section{Formal Internal Logic}
@@ -960,15 +1005,15 @@
 	In the preceding sections, we have been concentrating on the semantics of the internal language, with syntax being a notational convenience to lay out the semantic terms being considered.  However, as in formal logic, model theory, and computer science, there are benefits to studying the corresponding syntactic objects in themselves.  I will not be presenting a full exposition of the syntax; instead I will just give a review of the main components here:
 	
 	\begin{itemize}
-		\item Type forming constructs: $\times$, $\Omega$, $1$, $0$, $\multimap$, $\Sigma$, $\sqcup$, $/$.
-		\item Term forming constructs: $=$, $\in$, $\land$, $\lor$, $\lnot$, $\rightarrow$, $\top$, $\bot$, $\forall$, $\exists$, $\exists!$, $\lambda$, function application, subset comprehension $\{ x : X \mid \cdots \}$, $\iota$, $\mathsf{drop}$, $\mathsf{lift}$.
+		\item Type forming constructs: $\times$, $1$, $P$, $\Omega$, $0$, $\multimap$, $\Sigma$, $\tilde\cdot$, $\sqcup$, $/$.
+		\item Term forming constructs: $({-}, {-})$, $\pi_1$, $\pi_2$, $()$, $=$, $\in$, $\land$, $\lor$, $\lnot$, $\rightarrow$, $\top$, $\bot$, $\forall$, $\exists$, $\exists!$, $\lambda$, function application, $\{ x : X \mid \cdots \}$, $\iota$, $\mathsf{drop}$, $\mathsf{lift}$, $\mathsf{def}$, etc.
 	\end{itemize}
 	
 	As for the entries in the assumptions context or the conclusion of a formal proof in the internal logic, these will be of the form:
 	\begin{itemize}
 		\item $\tau \mathrm{~type}$, indicating that the term $\tau$ is considered to be a valid type.
 		\item $\tau : X$, indicating that the term $\tau$ is considered to be a valid instance of the type term $X$.
-		\item $\varphi \mathrm{~true}$, indicating that the term $\varphi$ (where implicitly we suppose $\varphi : \Omega$ is assumed or provable) is considered to be a true proposition.
+		\item $\varphi \mathrm{~true}$, indicating that the term $\varphi$ (where implicitly we suppose $\varphi : \Omega$ is assumed or a valid type inference from the previous entries in the context) is considered to be a true proposition.
 	\end{itemize}
 	
 	The key observation, then, will be that essentially every formal proof rule which is valid in $\Set$, except for excluded middle / double negation elimination and the axiom of choice, are sound over any topos.  Thus, if you can produce a proof which is valid in $\mathsf{Set}$ using only intuitionistic logic, it almost certainly can be formalized to a valid proof in the internal language of a topos.
@@ -976,18 +1021,18 @@
 	In particular, we can show that these basic properties hold in any topos, so they can also be taken as axioms to be used in the internal logic:
 	
 	\begin{itemize}
-		\item ($\beta$ rule for subsets) $\forall t_1 : T_1, \ldots, \forall t_n : T_n, \forall x : X, x \in \{ y : X \mid \varphi \} \leftrightarrow \varphi [ y := x ]$ (where the last term is a synactic substitution of $x$ in place of $y$ which roughly will be defined recursively the way that you would expect, and the leading $\forall$ terms are for the free variables in $\tau$ other than $y$).
+		\item ($\beta$ rule for subsets) $\forall x : X, x \in \{ y : X \mid \varphi \} \leftrightarrow \varphi [ y := x ]$ (where the last term is a synactic substitution of $x$ in place of $y$ which roughly will be defined recursively the way that you would expect).
 		\item (subset extensionality) $\forall S, T : PX, (\forall x:X, x \in S \leftrightarrow x \in T) \rightarrow S = T$.
 		\item ($\eta$ rule for subsets) $\forall S : PX, S = \{ x : X \mid x \in S \}$.  (Of course, this is an easy consequence of the two previous axioms.)
-		\item (propositional extensionality) $\forall p, q : \Omega, ((p \rightarrow q) \land (q \rightarrow p)) \rightarrow p = q$.
+		\item (propositional extensionality) $\forall p, q : \Omega, (p \leftrightarrow q) \rightarrow p = q$.
 		\item ($\beta$ rule for functions) $\forall x : X, (\lambda y : X \, . \, \tau) (x) = \tau [ y := x ]$.
 		\item (functional extensionality) $\forall f, g : X \multimap Y, (\forall x : X, f(x) = g(x)) \rightarrow f = g$.
 		\item ($\eta$ rule for functions) $\forall f : X \multimap Y, f = \lambda x : X \, . \, f(x)$.
 		\item $\forall x : \Sigma S, \drop(x) \in S$.
 		\item As a corollary of the previous condition, $\forall y : \Sigma \{ x : X \mid \varphi \}, \varphi[x := \drop(y)]$.
 		\item $\forall y : \Sigma \{ x : X \mid \varphi \}, \lift(\drop(y)) = y$.
-		\item $\forall y : X, \varphi [x := y] \rightarrow \exists! \tilde y : \{ x : X \mid \varphi \}, \drop(\tilde y) = y$.
-		\item If $\varphi$ can be proven to satisfy the appropriate unique existence condition, then $\forall t_1 : T_1 \ldots t_n : T_n, \varphi[x := (\iota x : X \mid \varphi)]$.
+		\item If the context proves the appropriate condition on a term $\tau$ (through a formal proof given syntactically, i.e. $\Gamma \vdash \varphi[x := \tau]$), then $\drop(\lift_\varphi(\tau)) = \tau$.
+		\item If $\Gamma \vdash \exists! x:X, \varphi$, then one can conclude $\varphi[x := (\iota x : X \mid \varphi)]$ from the same context.
 	\end{itemize}
 	
 	As a brief indication of how this can be used, first of all there is the model theoretic application: every formally valid theorem of the internal logic automatically gives a theorem about topoi.
